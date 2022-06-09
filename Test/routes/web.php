@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
@@ -32,4 +33,13 @@ Route::controller(UserController::class)->group(function () {
 
 Route::resource('customer', CustomerController::class);
 
-Route::resource('product', ProductController::class);
+// Route::resource('product', ProductController::class);
+
+Route::get('/products', [ProductController::class, 'index'])->name('products.list');
+Route::controller(CartController::class)->group(function () {
+    Route::get('/cart', 'cartList')->name('cart.list');
+    Route::post('/cart', 'addToCart')->name('cart.store');
+    Route::post('/update-cart', 'updateCart')->name('cart.update');
+    Route::post('remove', 'removeCart')->name('cart.remove');
+    Route::post('clear', 'clearAllCart')->name('cart.clear');
+});
